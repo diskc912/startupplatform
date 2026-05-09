@@ -1,0 +1,31 @@
+1. THE STACK & CACHING STRATEGY
+
+We are successfully running a Next.js App Router stack heavily favoring Server Components (RSC) to keep the client bundle minimalist. 
+
+For caching, the strategy is well-architected:
+- We are leveraging Redis (via Upstash) combined with Next.js `unstable_cache` in `src/lib/cache.ts`. 
+- The globally shared "Trending" feeds (`getTrendingIdeasCached`, `getTrendingProblemsCached`) are cached and revalidated every 30 seconds. This means 10,000 users hitting the home page simultaneously will only trigger 1 database query every 30 seconds. This is elite-level efficiency.
+- The "My Gang" feeds are fully dynamic and bypass cache, which is correct since they are strictly personalized based on the authenticated user's relationships.
+
+2. DATABASE & SUPABASE EFFICIENCY
+
+Overall, data aggregation is being pushed down to Postgres where it belongs:
+- N+1 Query Avoidance: In `src/app/page.tsx`, we do a single bulk query to fetch all `ganged_id`s for the current user and pass a Set (`gangedUserIds`) down to the feed cards. This prevents firing a database check for every single card in the feed.
+- We utilize RPCs (Remote Procedure Calls like `get_trending_ideas` and `get_ganged_problems`) heavily. This means Postgres is doing the complex JOINs natively rather than our Node.js server pulling massive datasets and merging them.
+- Notifications Cap: The 100-max trigger constraint on the `notifications` table is a massive win. Because we mathematically guarantee a user will never have more than 100 notifications, our server-side aggregation utility (`groupNotifications`) can pull the entire dataset in a single query without complex pagination limits, entirely bypassing standard memory-leak issues on the server.
+
+3. FRONTEND & BUNDLE SIZE
+
+The frontend strictly sticks to our monochrome, ultra-minimalist aesthetic, which naturally keeps CSS complexity low. We are correctly using Server Components for the majority of the UI, only dropping to "use client" for specific interactions.
+
+However, the image pipeline has significant issues:
+- We are correctly using Cloudflare R2 for direct-to-bucket uploads (`getR2PresignedUrl`). This is highly efficient as it prevents Next.js from acting as an expensive middleman proxy for binary blobs.
+- We are enforcing `.webp` formats at the point of upload, which saves bandwidth.
+- BUT: We are actively misusing `next/image` in `src/components/FeedCard.tsx`.
+
+4. IDENTIFIED BOTTLENECKS (The Red Flags)
+
+- RED FLAG: Image Rendering (`src/components/FeedCard.tsx`). We are passing `unoptimized` AND `loading="eager"` to `<Image />`. If our feed loads 50 posts, the browser will attempt to download 50 high-resolution `.webp` files immediately on page load, completely bypassing Next.js's built-in image resizing and lazy loading capabilities. This will devastate mobile performance and run up our Cloudflare R2 egress costs. 
+- RED FLAG: Missing Pagination on Comments (`src/app/problems/[id]/page.tsx`). We fetch comments with `.select('*, profiles(...)')` with no `.limit()` or pagination logic. If a problem goes viral and gets 5,000 comments, the server will fetch all 5,000 rows, serialize them, and send an astronomical payload to the client on initial load.
+- RED FLAG: Missing Pagination on Gang Feeds (`src/app/page.tsx`). The `get_ganged_ideas` and `get_ganged_problems` RPCs return arrays that are dumped directly into the feed. As users gang up with more people, these feeds could return thousands of results at once.
+- MINOR FLAG: Revalidation Spikes. When someone upvotes a post (`toggleUpvoteAction`), we currently call `revalidatePath('/')`. This purges the entire homepage cache for everyone. If 100 people are upvoting different posts per second, the Redis 30-second cache is being invalidated instantly, turning our cached feed into a fully dynamic feed under load. We need to implement granular tag-based revalidation instead of nuking the root layout.

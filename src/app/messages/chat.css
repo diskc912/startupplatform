@@ -1,0 +1,272 @@
+/* ═══════════════════════════════════════════════════════════════
+   Stream Chat — Custom Theme (Light & Dark Mode)
+═══════════════════════════════════════════════════════════════ */
+
+.str-chat-override {
+  --chat-bg: var(--background);
+  --chat-fg: var(--foreground);
+  --chat-border: var(--border);
+  --chat-muted-fg: #6b7280;
+  --chat-my-bubble-bg: #111111;
+  --chat-my-bubble-fg: #ffffff;
+  --chat-their-bubble-bg: #f0f0f0;
+  --chat-their-bubble-fg: #111111;
+  --chat-hover-bg: #f9fafb;
+  --chat-active-bg: #f3f4f6;
+  --chat-online: #22c55e;
+  --chat-offline: #9ca3af;
+}
+
+.dark .str-chat-override {
+  --chat-muted-fg: #9ca3af;
+  --chat-my-bubble-bg: #2d2d2d;
+  --chat-my-bubble-fg: #ffffff;
+  --chat-their-bubble-bg: #1f1f1f;
+  --chat-their-bubble-fg: #ffffff;
+  --chat-hover-bg: #1a1a1a;
+  --chat-active-bg: #262626;
+}
+
+/* ══ 1. FORCE BACKGROUNDS ON ALL CONTAINERS ───────────── */
+
+.str-chat-override .str-chat__channel-list,
+.str-chat-override .str-chat__channel-list-messenger,
+.str-chat-override .str-chat__channel-list-messenger__main,
+.str-chat-override .str-chat__channel-list-react {
+  background-color: var(--chat-bg) !important;
+  height: 100% !important;
+}
+
+.str-chat-override .str-chat__container,
+.str-chat-override .str-chat__main-panel,
+.str-chat-override .str-chat__list,
+.str-chat-override .str-chat__message-list,
+.str-chat-override .str-chat__ul {
+  background-color: var(--chat-bg) !important;
+}
+
+/* ══ 2. SIDEBAR HEADER "Chats" ───────────────────────────────── */
+
+.str-chat-override .str-chat__channel-list-header {
+  background-color: var(--chat-bg) !important;
+  border-bottom: 1px solid var(--chat-border) !important;
+  box-shadow: none !important;
+}
+
+.str-chat-override .str-chat__channel-list-header__name,
+.str-chat-override .str-chat__channel-list-header * {
+  color: var(--chat-fg) !important;
+  font-weight: 700 !important;
+}
+
+/* ══ 3. CHANNEL PREVIEW ROWS ────────────────────────────────── */
+
+.str-chat-override .str-chat__channel-preview-messenger {
+  background-color: var(--chat-bg) !important;
+  border-bottom: 1px solid var(--chat-border) !important;
+}
+
+.str-chat-override .str-chat__channel-preview-messenger:hover {
+  background-color: var(--chat-hover-bg) !important;
+}
+
+.str-chat-override .str-chat__channel-preview-messenger--active {
+  background-color: var(--chat-active-bg) !important;
+}
+
+.str-chat-override .str-chat__channel-preview-messenger--unread {
+  background-color: var(--chat-hover-bg) !important;
+}
+
+.str-chat-override .str-chat__channel-preview-messenger__name {
+  color: var(--chat-fg) !important;
+  font-weight: 600 !important;
+}
+
+.str-chat-override .str-chat__channel-preview-messenger__last-message {
+  color: var(--chat-muted-fg) !important;
+}
+
+/* Round preview avatars */
+.str-chat-override .str-chat__channel-preview-messenger .str-chat__avatar,
+.str-chat-override .str-chat__channel-preview-messenger .str-chat__avatar-image,
+.str-chat-override .str-chat__channel-preview-messenger .str-chat__avatar-fallback {
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+/* ══ 4. HIDE MUTE/DELETE OVERLAP ────────────────────────────── */
+
+.str-chat-override button[aria-label="Mute"],
+.str-chat-override button[aria-label="Delete"],
+.str-chat-override button[title="Mute"],
+.str-chat-override button[title="Delete"],
+.str-chat-override .str-chat__channel-preview-messenger--actions {
+  display: none !important;
+}
+
+/* ══ 5. LOAD MORE BUTTON ─────────────────────────────────────── */
+
+.str-chat-override .str-chat__load-more-button {
+  background-color: var(--chat-bg) !important;
+  color: var(--chat-fg) !important;
+  border: 1px solid var(--chat-border) !important;
+  padding: 6px 14px !important;
+  margin: 8px auto !important;
+  display: block !important;
+  cursor: pointer !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* ══ 6. CHANNEL HEADER (name + online status) ────────────────── */
+
+.str-chat-override .str-chat__channel-header {
+  background-color: var(--chat-bg) !important;
+  border-bottom: 1px solid var(--chat-border) !important;
+  box-shadow: none !important;
+}
+
+.str-chat-override .str-chat__channel-header-title,
+.str-chat-override .str-chat__channel-header * {
+  color: var(--chat-fg) !important;
+}
+
+.str-chat-override .str-chat__channel-header-subtext {
+  color: var(--chat-muted-fg) !important;
+  font-size: 11px !important;
+}
+
+/* Round header avatar */
+.str-chat-override .str-chat__channel-header .str-chat__avatar,
+.str-chat-override .str-chat__channel-header .str-chat__avatar-image,
+.str-chat-override .str-chat__channel-header .str-chat__avatar-fallback {
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+/* ══ 7. ONLINE / OFFLINE INDICATORS ────────────────────────── */
+
+.str-chat-override .str-chat__user-status--online,
+.str-chat-override [class*="status--online"] {
+  background-color: var(--chat-online) !important;
+  border-radius: 50% !important;
+}
+
+.str-chat-override .str-chat__user-status--offline,
+.str-chat-override [class*="status--offline"] {
+  background-color: var(--chat-offline) !important;
+  border-radius: 50% !important;
+}
+
+/* ══ 8. DATE SEPARATORS ─────────────────────────────────────── */
+
+.str-chat-override .str-chat__date-separator-date {
+  color: var(--chat-muted-fg) !important;
+  background-color: var(--chat-bg) !important;
+}
+
+.str-chat-override .str-chat__date-separator-line {
+  border-color: var(--chat-border) !important;
+}
+
+/* ══ 9. MESSAGE AVATARS — ROUND ─────────────────────────────── */
+
+.str-chat-override .str-chat__message .str-chat__avatar,
+.str-chat-override .str-chat__message .str-chat__avatar-image,
+.str-chat-override .str-chat__message .str-chat__avatar-fallback {
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+/* ══ 10. MESSAGE BUBBLES ────────────────────────────────────── */
+
+/* Their messages */
+.str-chat-override .str-chat__message-bubble {
+  background-color: var(--chat-their-bubble-bg) !important;
+  color: var(--chat-their-bubble-fg) !important;
+  border: none !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+/* My messages */
+.str-chat-override .str-chat__message--me .str-chat__message-bubble {
+  background-color: var(--chat-my-bubble-bg) !important;
+  color: var(--chat-my-bubble-fg) !important;
+  border: none !important;
+}
+
+/* Text in their bubble */
+.str-chat-override .str-chat__message-text,
+.str-chat-override .str-chat__message-text p {
+  color: var(--chat-their-bubble-fg) !important;
+}
+
+/* Text in my bubble */
+.str-chat-override .str-chat__message--me .str-chat__message-text,
+.str-chat-override .str-chat__message--me .str-chat__message-text p {
+  color: var(--chat-my-bubble-fg) !important;
+}
+
+/* Timestamp */
+.str-chat-override .str-chat__message-sender-name,
+.str-chat-override .str-chat__message-time {
+  color: var(--chat-muted-fg) !important;
+  font-size: 10px !important;
+}
+
+/* ══ 11. MESSAGE COMPOSER ────────────────────────────────────── */
+
+.str-chat-override .str-chat__message-input,
+.str-chat-override .str-chat__message-composer,
+.str-chat-override [class*="message-input"],
+.str-chat-override [class*="message-composer"] {
+  background-color: var(--chat-bg) !important;
+  border-top: 1px solid var(--chat-border) !important;
+  box-shadow: none !important;
+}
+
+.str-chat-override .str-chat__textarea textarea {
+  background-color: var(--chat-bg) !important;
+  color: var(--chat-fg) !important;
+  border: 1px solid var(--chat-border) !important;
+  border-radius: 18px !important;
+  padding: 8px 14px !important;
+  outline: none !important;
+}
+
+.str-chat-override .str-chat__textarea textarea::placeholder {
+  color: var(--chat-muted-fg) !important;
+}
+
+.str-chat-override button.str-chat__send-button {
+  fill: var(--chat-fg) !important;
+  color: var(--chat-fg) !important;
+}
+
+.str-chat-override svg {
+  fill: currentColor;
+}
+
+/* ══ 12. DROPDOWNS ───────────────────────────────────────────── */
+
+.str-chat__message-actions-box,
+[data-floating-ui-portal] {
+  z-index: 9999 !important;
+  background-color: var(--chat-bg) !important;
+  border: 1px solid var(--chat-border) !important;
+  border-radius: 8px !important;
+}
+
+.str-chat__message-actions-list button {
+  color: var(--chat-fg) !important;
+  padding: 8px 16px !important;
+  text-align: left !important;
+  width: 100% !important;
+  background-color: transparent !important;
+}
+
+.str-chat__message-actions-list button:hover {
+  background-color: var(--chat-hover-bg) !important;
+}

@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-sans);
+}
+
+/* ──────────────────────────────────────────────
+   Design System: Strict Minimalism
+   - White background, black text (light mode)
+   - Black background, white text (dark mode)
+   - No shadows, no gradients, no glassmorphism
+   - Flat borders only (1px solid)
+   ────────────────────────────────────────────── */
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --border: #e5e7eb;
+  --muted: #6b7280;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --border: #1f2937;
+  --muted: #9ca3af;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.back-link {
+  color: var(--muted);
+}
+.back-link:hover {
+  color: var(--foreground);
+}
+
+/* Remove browser default outlines & replace with flat black border */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: #ffffff;
+}
+
+/* Flat button reset — use Tailwind classes for button styling */
+button {
+  font-family: inherit;
+}
+
+/* Remove all default link color; use Tailwind classes */
+a {
+  color: inherit;
+}
+
+/* Scrollbar: minimal */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #374151;
 }
