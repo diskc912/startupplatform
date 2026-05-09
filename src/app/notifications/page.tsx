@@ -63,7 +63,10 @@ export default async function NotificationsPage() {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>Notifications</h1>
         {hasUnread && (
-          <form action={markAllAsRead}>
+          <form action={async () => {
+            'use server';
+            await markAllAsRead();
+          }}>
             <button
               type="submit"
               className="text-xs font-medium px-3 py-1.5 transition-colors border"
