@@ -270,3 +270,21 @@
 .str-chat__message-actions-list button:hover {
   background-color: var(--chat-hover-bg) !important;
 }
+
+/* ══ 13. IMAGE MODAL CLOSE BUTTON ────────────────────────────── */
+
+.str-chat__modal__close-button,
+.str-chat-override .str-chat__modal__close-button {
+  display: flex !important;
+  color: #ffffff !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 50% !important;
+  padding: 8px !important;
+  z-index: 99999 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.str-chat__modal__close-button svg {
+  fill: currentColor !important;
+}
