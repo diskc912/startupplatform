@@ -120,7 +120,7 @@ export default async function AdminPage() {
                   <th className="px-4 py-2 font-medium" style={{ color: 'var(--foreground)' }}>Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y" style={{ divideColor: 'var(--border)' }}>
+          <tbody className="divide-y divide-[var(--border)]">
                 {reports?.map(report => (
                   <tr key={report.id} className="hover:bg-opacity-50" style={{ backgroundColor: 'var(--background)' }}>
                     <td className="px-4 py-2 truncate max-w-[150px]" style={{ color: 'var(--foreground)' }} title={report.target_id}>{report.target_id}</td>
