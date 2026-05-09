@@ -71,14 +71,7 @@ export default async function Navbar() {
 
           {user ? (
             <>
-              {profileUsername && (
-                <Link
-                  href="/profile"
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  <Avatar username={profileUsername} avatarUrl={profileAvatarUrl} size={32} />
-                </Link>
-              )}
+
               <Link
                 href="/settings"
                 className="hover:underline whitespace-nowrap hidden sm:inline"
@@ -116,6 +109,14 @@ export default async function Navbar() {
           <div className="flex items-center gap-3">
             <NotificationBell />
             <MessageBell />
+            {profileUsername && (
+              <Link
+                href="/profile"
+                className="hover:opacity-80 transition-opacity ml-1"
+              >
+                <Avatar username={profileUsername} avatarUrl={profileAvatarUrl} size={32} />
+              </Link>
+            )}
           </div>
         </div>
       </nav>
