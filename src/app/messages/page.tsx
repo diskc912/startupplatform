@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Chat, Channel, ChannelHeader, ChannelList, MessageComposer, MessageList, Thread, Window } from 'stream-chat-react'
 import 'stream-chat-react/dist/css/index.css'
 import './chat.css'
 import { StreamContext } from '@/components/StreamProvider'
 
-export default function MessagesPage() {
+function MessagesContent() {
   const searchParams = useSearchParams()
   const channelId = searchParams.get('channel')
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null)
@@ -78,5 +78,20 @@ export default function MessagesPage() {
         </div>
       </Chat>
     </div>
+  )
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={
+      <div
+        className="flex items-center justify-center w-full"
+        style={{ height: 'calc(100vh - 48px)', backgroundColor: 'var(--background)' }}
+      >
+        <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Loading chat...</p>
+      </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   )
 }
