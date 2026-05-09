@@ -118,6 +118,6 @@ export async function createProblem(
     return { error: error.message }
   }
 
-  revalidatePath('/?feed=problems')
-  redirect('/?feed=problems')
+  revalidatePath('/profile')
+  redirect('/profile')
 }

@@ -3,6 +3,7 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import { r2Client, R2_BUCKET } from '@/lib/r2'
 import { createClient } from '@/lib/supabase/server'
 import { ratelimit } from '@/lib/ratelimit'
@@ -112,5 +113,6 @@ export async function createIdea(
     return { error: error.message }
   }
 
-  redirect('/')
+  revalidatePath('/profile')
+  redirect('/profile')
 }

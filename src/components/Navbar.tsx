@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/app/actions/auth'
 import MessageBell from '@/components/MessageBell'
 import NotificationBell from '@/components/NotificationBell'
+import Avatar from '@/components/Avatar'
 
 export default async function Navbar() {
   const supabase = await createClient()
@@ -12,13 +13,15 @@ export default async function Navbar() {
   } = await supabase.auth.getUser()
 
   let profileUsername = null
+  let profileAvatarUrl = null
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('username')
+      .select('username, avatar_url')
       .eq('id', user.id)
       .single()
     profileUsername = profile?.username
+    profileAvatarUrl = profile?.avatar_url
   }
 
   return (
@@ -70,11 +73,10 @@ export default async function Navbar() {
             <>
               {profileUsername && (
                 <Link
-                  href={`/profile/${profileUsername}`}
-                  className="hover:underline whitespace-nowrap hidden sm:inline"
-                  style={{ color: 'var(--muted)' }}
+                  href="/profile"
+                  className="hover:opacity-80 transition-opacity"
                 >
-                  Profile
+                  <Avatar username={profileUsername} avatarUrl={profileAvatarUrl} size={32} />
                 </Link>
               )}
               <Link
