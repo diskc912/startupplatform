@@ -54,7 +54,7 @@ export default async function AdminPage() {
 
       <div className="mb-12">
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Hidden Items</h2>
-        
+
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-medium mb-2" style={{ color: 'var(--foreground)' }}>Hidden Ideas</h3>
@@ -120,7 +120,7 @@ export default async function AdminPage() {
                   <th className="px-4 py-2 font-medium" style={{ color: 'var(--foreground)' }}>Date</th>
                 </tr>
               </thead>
-          <tbody className="divide-y divide-[var(--border)]">
+              <tbody className="divide-y divide-[var(--border)]">
                 {reports?.map(report => (
                   <tr key={report.id} className="hover:bg-opacity-50" style={{ backgroundColor: 'var(--background)' }}>
                     <td className="px-4 py-2 truncate max-w-[150px]" style={{ color: 'var(--foreground)' }} title={report.target_id}>{report.target_id}</td>
