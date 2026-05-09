@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import FeedCard from '@/components/FeedCard'
 import ProblemCard from '@/components/ProblemCard'
+import UserDeleteButton from '@/components/UserDeleteButton'
 import type { Idea, Problem } from '@/lib/types'
 
 export const metadata = {
@@ -91,7 +92,12 @@ export default async function PersonalProfilePage() {
           ) : (
             <div className="flex flex-col">
               {ideas.map((idea) => (
-                <FeedCard key={idea.id} idea={idea} />
+                <div key={idea.id} className="relative">
+                  <div className="absolute top-4 right-0 z-10">
+                    <UserDeleteButton targetId={idea.id} targetType="idea" />
+                  </div>
+                  <FeedCard idea={idea} />
+                </div>
               ))}
             </div>
           )}
@@ -109,7 +115,12 @@ export default async function PersonalProfilePage() {
           ) : (
             <div className="flex flex-col">
               {problems.map((problem) => (
-                <ProblemCard key={problem.id} problem={problem} />
+                <div key={problem.id} className="relative">
+                  <div className="absolute top-4 right-0 z-10">
+                    <UserDeleteButton targetId={problem.id} targetType="problem" />
+                  </div>
+                  <ProblemCard problem={problem} />
+                </div>
               ))}
             </div>
           )}
