@@ -54,15 +54,30 @@ export default function StreamProvider({ children }: { children: React.ReactNode
         streamClient = StreamChat.getInstance(apiKey)
       }
 
+      // Prevent calling connectUser multiple times in React Strict Mode
+      if (streamClient.userID === user.id) {
+        if (isMounted) setClientReady(true)
+        return
+      }
+
+      // If connected as a different user, disconnect first
+      if (streamClient.userID) {
+        await streamClient.disconnectUser()
+      }
+
       // Connect the user to Stream, syncing their profile info
-      await streamClient.connectUser(
-        {
-          id: user.id,
-          name: profile.username || user.id,
-          image: profile.avatar_url || undefined,
-        },
-        token
-      )
+      try {
+        await streamClient.connectUser(
+          {
+            id: user.id,
+            name: profile.username || user.id,
+            image: profile.avatar_url || undefined,
+          },
+          token
+        )
+      } catch (err) {
+        console.error('Stream connection error:', err)
+      }
 
       if (isMounted) {
         setClientReady(true)
