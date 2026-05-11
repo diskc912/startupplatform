@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'pub-9e3d61eaf0d94d4084bc1e17da78985e.r2.dev',
       },
+      // Google User Profile Pictures
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
   },
 }
