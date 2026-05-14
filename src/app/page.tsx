@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import FeedCard from '@/components/FeedCard'
 import ProblemCard from '@/components/ProblemCard'
+import InfiniteFeed from '@/components/InfiniteFeed'
 import type { Idea, Problem } from '@/lib/types'
 
 export const metadata = {
@@ -74,14 +75,14 @@ export default async function FeedPage({
         ['trending-problems'],
         { revalidate: 30 }
       )
-      items = await fetchProblems()
+      items = (await fetchProblems()).slice(0, 50)
     } else {
       const fetchIdeas = unstable_cache(
         async () => getTrendingIdeasCached(),
         ['trending-ideas'],
         { revalidate: 30 }
       )
-      items = await fetchIdeas()
+      items = (await fetchIdeas()).slice(0, 50)
     }
   }
 
@@ -221,13 +222,14 @@ export default async function FeedPage({
           </p>
         </div>
       ) : (
-        <div>
-          {items.map((item, index) =>
-            isProblems
-              ? <ProblemCard key={item.id} problem={item as Problem} currentUserId={currentUserId} gangedUserIds={gangedUserIds} isAdmin={isAdmin} />
-              : <FeedCard key={item.id} idea={item as Idea} currentUserId={currentUserId} gangedUserIds={gangedUserIds} priority={index === 0} isAdmin={isAdmin} />
-          )}
-        </div>
+        <InfiniteFeed 
+          feedType={isProblems ? 'problems' : 'ideas'}
+          tabType={isGangTab ? 'gang' : 'trending'}
+          initialItems={items}
+          currentUserId={currentUserId}
+          gangedUserIdsArray={Array.from(gangedUserIds)}
+          isAdmin={isAdmin}
+        />
       )}
     </div>
   )
